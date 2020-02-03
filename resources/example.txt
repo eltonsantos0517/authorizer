@@ -1,0 +1,10 @@
+{"transaction": {"merchant": "McDonald's", "amount": 31.5, "time": "2019-02-13T09:00:00.000Z"}}
+{"account": {"active-card": true, "available-limit": 100}}
+{"account": {"active-card": false, "available-limit": 100}}
+{"transaction": {"merchant": "Burger King", "amount": 20, "time": "2019-02-13T10:00:00.000Z"}}
+{"transaction": {"merchant": "Habbib's", "amount": 90, "time": "2019-02-13T11:00:00.000Z"}}
+{"transaction": {"merchant": "Bob's Paulista", "amount": 10, "time": "2019-02-13T12:00:00.000Z"}}
+{"transaction": {"merchant": "Bob's Consolacao", "amount": 10, "time": "2019-02-13T12:00:02.000Z"}}
+{"transaction": {"merchant": "Bob's Metrô", "amount": 10, "time": "2019-02-13T12:00:04.000Z"}}
+{"transaction": {"merchant": "Bob's Metrô", "amount": 10, "time": "2019-02-13T12:00:05.000Z"}}
+{"transaction": {"merchant": "Bob's Rodoviaria", "amount": 10, "time": "2019-02-13T12:01:59.000Z"}}

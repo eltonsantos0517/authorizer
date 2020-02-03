@@ -1,0 +1,48 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <ClojureCodeStyleSettings>{
+  :cljs.core/cond-&gt; 1
+  :clojure.core/as-&gt; 2
+  :clojure.core/comment :only-indent
+  :clojure.core/cond-&gt; 1
+  :clojure.core/cond-&gt;&gt; 1
+  :clojure.test.check/quick-check 1
+  :com.walmartlabs.lacinia.internal-utils/with-exception-context 1
+  :common-core.exceptions/try-type :only-indent
+  :common-core.timed/logged-call 1
+  :common-core.visibility/with-tags 1
+  :common-datomic.test-helpers/let-entities :only-indent
+  :common-http-client.components.mock-http/with-responses 1
+  :common-io.test-helpers/with-synchronous :only-indent
+  :common-metrics.utils/with-timer :only-indent
+  :common-test.http/as-customer 1
+  :common-test.http/as-delegate 2
+  :common-test.http/with-client-auth 1
+  :common-test.http/with-scopes 1
+  :common-test.postman.core/as-of 1
+  :common-test.postman.e2e/flow :only-indent
+  :common-test.postman.flow/flow :only-indent
+  :cursive.formatting/align-binding-forms true
+  :cursive.formatting/one-space-lists true
+  :e2e-clj.components.kafka/tap-topics-with-form-result 2
+  :midje.sweet/fact :only-indent
+  :midje.sweet/facts 1
+  :midje.sweet/provided 1000
+  :midje.sweet/tabular 1
+  :pedestal.swagger.core/defroutes 1
+  :postman.aux.bank-accounts/with-bank-accounts 1
+  :postman.aux.init/flow-with-defaults :only-indent
+  :postman.daily-savings-balances/profile 1
+  :postman.profiling/profile 2
+  :postman.profiling.aux/flow-without-validation :only-indent
+  :postman.profiling.aux/profile 2
+  :postman.profiling.balances/flow-without-validation :only-indent
+  :re-frame.core/reg-event-fx 1000
+  :schema.core/with-fn-validation :only-indent
+  :scratch.scratch/with-new-conn :only-indent
+  :taoensso.tufte/p 1
+  :taoensso.tufte/profile 1
+  :taoensso.tufte/profiled 1
+}</ClojureCodeStyleSettings>
+  </code_scheme>
+</component>
