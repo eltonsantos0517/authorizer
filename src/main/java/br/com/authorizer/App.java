@@ -25,25 +25,10 @@ import java.io.*;
 import java.math.BigDecimal;
 
 public class App {
-    public static class Account {
-        @SerializedName("active-card")
-        public boolean activeCard;
 
-        @SerializedName("available-limit")
-        public BigDecimal availableLimit;
+    public static void main(String[] args) throws Exception {
+        run(new InputStreamReader(System.in), new OutputStreamWriter(System.out));
     }
-
-    public static class Transaction {
-        public BigDecimal amount;
-        public String merchant;
-        public String time;
-    }
-
-    public static class Request {
-        public Account account;
-        public Transaction transaction;
-    }
-
 
     public static void run(Reader in, Writer out) throws Exception {
         BufferedReader r = new BufferedReader(in);
@@ -91,7 +76,79 @@ public class App {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        run(new InputStreamReader(System.in), new OutputStreamWriter(System.out));
+    public static class Account {
+        @SerializedName("active-card")
+        private boolean activeCard;
+
+        @SerializedName("available-limit")
+        private BigDecimal availableLimit;
+
+        public boolean isActiveCard() {
+            return activeCard;
+        }
+
+        public void setActiveCard(boolean activeCard) {
+            this.activeCard = activeCard;
+        }
+
+        public BigDecimal getAvailableLimit() {
+            return availableLimit;
+        }
+
+        public void setAvailableLimit(BigDecimal availableLimit) {
+            this.availableLimit = availableLimit;
+        }
     }
+
+    public static class Transaction {
+        private BigDecimal amount;
+        private String merchant;
+        private String time;
+
+        public BigDecimal getAmount() {
+            return amount;
+        }
+
+        public void setAmount(BigDecimal amount) {
+            this.amount = amount;
+        }
+
+        public String getMerchant() {
+            return merchant;
+        }
+
+        public void setMerchant(String merchant) {
+            this.merchant = merchant;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
+    }
+
+    public static class Request {
+        private Account account;
+        private Transaction transaction;
+
+        public Account getAccount() {
+            return account;
+        }
+
+        public void setAccount(Account account) {
+            this.account = account;
+        }
+
+        public Transaction getTransaction() {
+            return transaction;
+        }
+
+        public void setTransaction(Transaction transaction) {
+            this.transaction = transaction;
+        }
+    }
+
 }

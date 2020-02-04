@@ -28,12 +28,11 @@ public class AccountConverter {
     static CreateAccountRequest toRequest(App.Account account) {
         return CreateAccountRequest.Builder
                 .aRequest()
-                .withActiveCard(account.activeCard)
-                .withAvailableLimit(account.availableLimit)
+                .withActiveCard(account.isActiveCard())
+                .withAvailableLimit(account.getAvailableLimit())
                 .build();
     }
-
-
+    
     private AccountConverter() {
     }
 }

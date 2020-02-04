@@ -28,9 +28,9 @@ public class TransactionConverter {
     static CreateTransactionRequest toRequest(App.Transaction transaction) {
         return CreateTransactionRequest.Builder
                 .aRequest()
-                .withTime(transaction.time)
-                .withMerchant(transaction.merchant)
-                .withAmount(transaction.amount)
+                .withTime(transaction.getTime())
+                .withMerchant(transaction.getMerchant())
+                .withAmount(transaction.getAmount())
                 .build();
     }
 

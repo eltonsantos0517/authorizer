@@ -28,6 +28,35 @@ public class CreateAccountResponse {
         return violations;
     }
 
+    public static final class Builder {
+        private AccountResponse account;
+        private List<String> violations;
+
+        private Builder() {
+        }
+
+        public static Builder aResponse() {
+            return new Builder();
+        }
+
+        public Builder withAccountResponse(AccountResponse account) {
+            this.account = account;
+            return this;
+        }
+
+        public Builder withViolations(List<Violation> violations) {
+            this.violations = Optional.ofNullable(violations).orElse(new ArrayList<>())
+                    .stream()
+                    .map(Violation::getId)
+                    .collect(Collectors.toList());
+            return this;
+        }
+
+        public CreateAccountResponse build() {
+            return new CreateAccountResponse(this.account, this.violations);
+        }
+    }
+
     public static class AccountResponse {
 
         @SerializedName("active-card")
@@ -73,37 +102,6 @@ public class CreateAccountResponse {
             public AccountResponse build() {
                 return new AccountResponse(this.activeCard, this.availableLimit);
             }
-        }
-
-
-    }
-
-    public static final class Builder {
-        private AccountResponse account;
-        private List<String> violations;
-
-        private Builder() {
-        }
-
-        public static Builder aResponse() {
-            return new Builder();
-        }
-
-        public Builder withAccountResponse(AccountResponse account) {
-            this.account = account;
-            return this;
-        }
-
-        public Builder withViolations(List<Violation> violations) {
-            this.violations = Optional.ofNullable(violations).orElse(new ArrayList<>())
-                    .stream()
-                    .map(Violation::getId)
-                    .collect(Collectors.toList());
-            return this;
-        }
-
-        public CreateAccountResponse build() {
-            return new CreateAccountResponse(this.account, this.violations);
         }
     }
 }

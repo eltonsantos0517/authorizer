@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 public class Transaction {
 
-    public BigDecimal amount;
-    public String merchant;
-    public String time;
+    private BigDecimal amount;
+    private String merchant;
+    private String time;
 
     public Transaction(BigDecimal amount, String merchant, String time) {
         this.amount = amount;

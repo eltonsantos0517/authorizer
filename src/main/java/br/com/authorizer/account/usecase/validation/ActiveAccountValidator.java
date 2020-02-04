@@ -1,7 +1,7 @@
 package br.com.authorizer.account.usecase.validation;
 
-import br.com.authorizer.account.usecase.Account;
 import br.com.authorizer.Violation;
+import br.com.authorizer.account.usecase.Account;
 import br.com.authorizer.account.usecase.CreateAccountRequest;
 
 import java.util.List;
