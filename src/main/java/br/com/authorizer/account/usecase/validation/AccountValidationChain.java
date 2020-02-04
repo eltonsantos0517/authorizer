@@ -7,7 +7,7 @@ import br.com.authorizer.account.usecase.CreateAccountRequest;
 import java.util.List;
 import java.util.Optional;
 
-public class AccountValidationChain {
+public class AccountValidationChain implements ValidationChain {
 
     private AccountValidationChainFactory chainFactory;
 

@@ -3,7 +3,7 @@ package br.com.authorizer.account.usecase;
 import br.com.authorizer.Violation;
 import br.com.authorizer.ViolationException;
 import br.com.authorizer.account.gateway.AccountGateway;
-import br.com.authorizer.account.usecase.validation.AccountValidationChain;
+import br.com.authorizer.account.usecase.validation.ValidationChain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,9 @@ import java.util.Optional;
 public class CreateAccountUseCase implements CreateAccount {
 
     private AccountGateway accountGateway;
-    private AccountValidationChain accountValidationChain;
+    private ValidationChain accountValidationChain;
 
-    public CreateAccountUseCase(AccountGateway accountGateway, AccountValidationChain accountValidationChain) {
+    public CreateAccountUseCase(AccountGateway accountGateway, ValidationChain accountValidationChain) {
         this.accountGateway = accountGateway;
         this.accountValidationChain = accountValidationChain;
     }

@@ -15,7 +15,7 @@ import br.com.authorizer.transaction.entrypoint.commandline.TransactionCommandLi
 import br.com.authorizer.transaction.gateway.TransactionRepository;
 import br.com.authorizer.transaction.gateway.client.TransactionInMemoryDatabase;
 import br.com.authorizer.transaction.usecase.CreateTransactionUseCase;
-import br.com.authorizer.transaction.usecase.validation.DefaultTransactionValidationFactory;
+import br.com.authorizer.transaction.usecase.validation.DefaultTransactionValidationChainFactory;
 import br.com.authorizer.transaction.usecase.validation.TransactionValidationChain;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -56,7 +56,7 @@ public class App {
                                 new TransactionInMemoryDatabase()
                         ),
                         new TransactionValidationChain(
-                                new DefaultTransactionValidationFactory()
+                                new DefaultTransactionValidationChainFactory()
                         )
                 )
         );
@@ -83,6 +83,14 @@ public class App {
         @SerializedName("available-limit")
         private BigDecimal availableLimit;
 
+        public Account() {
+        }
+
+        public Account(boolean activeCard, BigDecimal availableLimit) {
+            this.activeCard = activeCard;
+            this.availableLimit = availableLimit;
+        }
+
         public boolean isActiveCard() {
             return activeCard;
         }
@@ -104,6 +112,15 @@ public class App {
         private BigDecimal amount;
         private String merchant;
         private String time;
+
+        public Transaction() {
+        }
+
+        public Transaction(BigDecimal amount, String merchant, String time) {
+            this.amount = amount;
+            this.merchant = merchant;
+            this.time = time;
+        }
 
         public BigDecimal getAmount() {
             return amount;

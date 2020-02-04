@@ -9,11 +9,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-class InsufficientLimitIntervalTransactionValidation implements TransactionValidation {
+class InsufficientLimitIntervalTransactionValidator implements TransactionValidator {
 
-    private TransactionValidation next;
+    private TransactionValidator next;
 
-    public InsufficientLimitIntervalTransactionValidation(TransactionValidation next) {
+    public InsufficientLimitIntervalTransactionValidator(TransactionValidator next) {
         this.next = next;
     }
 

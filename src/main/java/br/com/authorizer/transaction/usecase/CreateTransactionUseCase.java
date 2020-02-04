@@ -5,7 +5,7 @@ import br.com.authorizer.ViolationException;
 import br.com.authorizer.account.gateway.AccountGateway;
 import br.com.authorizer.account.usecase.Account;
 import br.com.authorizer.transaction.gateway.TransactionGateway;
-import br.com.authorizer.transaction.usecase.validation.TransactionValidationChain;
+import br.com.authorizer.transaction.usecase.validation.ValidationChain;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,13 +16,13 @@ public class CreateTransactionUseCase implements CreateTransaction {
 
     private AccountGateway accountGateway;
     private TransactionGateway transactionGateway;
-    private TransactionValidationChain transactionValidationChain;
+    private ValidationChain validationChain;
 
     public CreateTransactionUseCase(AccountGateway accountGateway, TransactionGateway transactionGateway,
-                                    TransactionValidationChain transactionValidationChain) {
+                                    ValidationChain validationChain) {
         this.accountGateway = accountGateway;
         this.transactionGateway = transactionGateway;
-        this.transactionValidationChain = transactionValidationChain;
+        this.validationChain = validationChain;
     }
 
     public Account execute(CreateTransactionRequest request) throws ViolationException {
@@ -31,7 +31,7 @@ public class CreateTransactionUseCase implements CreateTransaction {
         Optional<Account> opAccount = accountGateway.getAccount();
         List<Transaction> transactions = transactionGateway.getAllTransactions();
 
-        transactionValidationChain.validate(request, opAccount, transactions, violations);
+        validationChain.validate(request, opAccount, transactions, violations);
 
         if (!violations.isEmpty()) {
             throw new ViolationException(opAccount.orElse(null), violations);

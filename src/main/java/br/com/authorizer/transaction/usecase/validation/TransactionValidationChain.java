@@ -8,7 +8,7 @@ import br.com.authorizer.transaction.usecase.Transaction;
 import java.util.List;
 import java.util.Optional;
 
-public class TransactionValidationChain {
+public class TransactionValidationChain implements ValidationChain {
 
     private TransactionValidationChainFactory chainFactory;
 

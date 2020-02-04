@@ -12,11 +12,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-class DoubledTransactionValidation implements TransactionValidation {
+class HighFrequencySmallIntervalTransactionValidator implements TransactionValidator {
 
-    private TransactionValidation next;
+    private TransactionValidator next;
 
-    public DoubledTransactionValidation(TransactionValidation next) {
+    public HighFrequencySmallIntervalTransactionValidator(TransactionValidator next) {
         this.next = next;
     }
 
@@ -28,19 +28,15 @@ class DoubledTransactionValidation implements TransactionValidation {
                 .minusMinutes(2);
 
         if (Optional.ofNullable(persistedTransactions).orElseGet(Collections::emptyList).stream()
-                .anyMatch(tx -> ZonedDateTime.parse(tx.getTime(), DateTimeFormatter.ISO_DATE_TIME)
+                .filter(tx -> ZonedDateTime.parse(tx.getTime(), DateTimeFormatter.ISO_DATE_TIME)
                         .withZoneSameInstant(ZoneOffset.UTC)
-                        .isAfter(twoMinutesBefore) &&
-                        tx.getAmount().equals(request.getAmount()) &&
-                        tx.getMerchant().equals(request.getMerchant()))) {
-            violations.add(Violation.DOUBLED_TRANSACTION);
+                        .isAfter(twoMinutesBefore)
+                ).count() >= 3) {
+            violations.add(Violation.HIGH_FREQUENCY_SMALL_INTERVAL);
         }
-
 
         if (next != null) {
             next.validate(request, opAccount, persistedTransactions, violations);
         }
-
-
     }
 }

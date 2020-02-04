@@ -5,25 +5,30 @@ import br.com.authorizer.account.usecase.Account;
 import br.com.authorizer.transaction.usecase.CreateTransactionRequest;
 import br.com.authorizer.transaction.usecase.Transaction;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-class AccountNotInitializedTransactionValidation implements TransactionValidation {
+class CardNotActiveTransactionValidator implements TransactionValidator {
 
-    private TransactionValidation next;
+    private TransactionValidator next;
 
-    public AccountNotInitializedTransactionValidation(TransactionValidation next) {
+    public CardNotActiveTransactionValidator(TransactionValidator next) {
         this.next = next;
     }
 
     @Override
     public void validate(CreateTransactionRequest request, Optional<Account> opAccount, List<Transaction> persistedTransactions, List<Violation> violations) {
 
-        if (!opAccount.isPresent()) {
-            violations.add(Violation.ACCOUNT_NOT_INITIALIZED);
-            //The violation breaks de chain, because other rules isn't validate if account was not created
-        } else {
+
+        if (!opAccount.orElseGet(() -> new Account(false, BigDecimal.ZERO))
+                .isActiveCard()) {
+            violations.add(Violation.CARD_NOT_ACTIVE);
+        }
+
+        if (next != null) {
             next.validate(request, opAccount, persistedTransactions, violations);
         }
+
     }
 }

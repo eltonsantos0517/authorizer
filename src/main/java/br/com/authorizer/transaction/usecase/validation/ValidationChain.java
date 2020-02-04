@@ -8,9 +8,8 @@ import br.com.authorizer.transaction.usecase.Transaction;
 import java.util.List;
 import java.util.Optional;
 
-interface TransactionValidation {
+public interface ValidationChain {
 
     void validate(CreateTransactionRequest request, Optional<Account> opAccount,
                   List<Transaction> persistedTransactions, List<Violation> violations);
-
 }

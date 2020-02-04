@@ -10,7 +10,7 @@ import java.io.StringWriter;
 
 import static org.junit.Assert.assertEquals;
 
-public class AppTest {
+public class IntegrationTest {
 
     public static String multiline(String... args) {
         String newLine = System.getProperty("line.separator");
