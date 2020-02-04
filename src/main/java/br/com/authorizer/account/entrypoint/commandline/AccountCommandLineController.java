@@ -1,10 +1,9 @@
 package br.com.authorizer.account.entrypoint.commandline;
 
-import authorizer_java.App;
+import br.com.authorizer.App;
 import br.com.authorizer.Violation;
 import br.com.authorizer.ViolationException;
 import br.com.authorizer.account.usecase.Account;
-import br.com.authorizer.account.usecase.CreateAccountRequest;
 import br.com.authorizer.account.usecase.CreateAccountUseCase;
 
 import java.util.Collections;
@@ -24,11 +23,8 @@ public class AccountCommandLineController {
         List<Violation> violations = Collections.emptyList();
 
         try {
-            responseAccount = createAccount.execute(CreateAccountRequest.Builder
-                    .aRequest()
-                    .withActiveCard(account.activeCard)
-                    .withAvailableLimit(account.availableLimit)
-                    .build()
+            responseAccount = createAccount.execute(
+                    AccountConverter.toRequest(account)
             );
         } catch (ViolationException violationException) {
             responseAccount = violationException.getAccount();
@@ -39,18 +35,6 @@ public class AccountCommandLineController {
             throw e;
         }
 
-        return CreateAccountResponse.Builder
-                .aResponse()
-                .withAccountResponse(
-                        responseAccount != null ?
-                                CreateAccountResponse.AccountResponse.Builder
-                                        .aResponse()
-                                        .withActiveCard(responseAccount.isActiveCard())
-                                        .withAvailableLimit(responseAccount.getAvailableLimit())
-                                        .build()
-                                : null
-                )
-                .withViolations(violations)
-                .build();
+        return AccountConverter.toResponse(responseAccount, violations);
     }
 }

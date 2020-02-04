@@ -10,23 +10,17 @@ import java.util.Optional;
 
 public class TransactionValidationChain {
 
+    private TransactionValidationChainFactory chainFactory;
+
+    public TransactionValidationChain(TransactionValidationChainFactory chainFactory) {
+        this.chainFactory = chainFactory;
+    }
+
     public void validate(CreateTransactionRequest request, Optional<Account> opAccount,
                          List<Transaction> persistedTransactions, List<Violation> violations) {
 
-        getChain().validate(request, opAccount, persistedTransactions, violations);
+        chainFactory.getChain().validate(request, opAccount, persistedTransactions, violations);
     }
 
-    private TransactionValidation getChain() {
-        return new AccountNotInitializedTransactionValidation(
-                new InsufficientLimitIntervalTransactionValidation(
-                        new CardNotActiveTransactionValidation(
-                                new HighFrequencySmallIntervalTransactionValidation(
-                                        new DoubledTransactionValidation(
-                                                null
-                                        )
-                                )
-                        )
-                )
-        );
-    }
+
 }

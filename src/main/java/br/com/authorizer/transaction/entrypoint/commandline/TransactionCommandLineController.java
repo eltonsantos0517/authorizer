@@ -1,10 +1,9 @@
 package br.com.authorizer.transaction.entrypoint.commandline;
 
-import authorizer_java.App;
+import br.com.authorizer.App;
 import br.com.authorizer.Violation;
 import br.com.authorizer.ViolationException;
 import br.com.authorizer.account.usecase.Account;
-import br.com.authorizer.transaction.usecase.CreateTransactionRequest;
 import br.com.authorizer.transaction.usecase.CreateTransactionUseCase;
 
 import java.util.Collections;
@@ -24,12 +23,8 @@ public class TransactionCommandLineController {
         List<Violation> violations = Collections.emptyList();
 
         try {
-            responseAccount = createTransaction.execute(CreateTransactionRequest.Builder
-                    .aRequest()
-                    .withAmount(transaction.amount)
-                    .withMerchant(transaction.merchant)
-                    .withTime(transaction.time)
-                    .build()
+            responseAccount = createTransaction.execute(
+                    TransactionConverter.toRequest(transaction)
             );
         } catch (ViolationException violationException) {
             responseAccount = violationException.getAccount();
@@ -41,18 +36,6 @@ public class TransactionCommandLineController {
         }
 
 
-        return CreateTransactionResponse.Builder
-                .aResponse()
-                .withAccountResponse(
-                        responseAccount != null ?
-                                CreateTransactionResponse.AccountResponse.Builder
-                                        .aResponse()
-                                        .withActiveCard(responseAccount.isActiveCard())
-                                        .withAvailableLimit(responseAccount.getAvailableLimit())
-                                        .build()
-                                : null
-                )
-                .withViolations(violations)
-                .build();
+        return TransactionConverter.toResponse(responseAccount, violations);
     }
 }
