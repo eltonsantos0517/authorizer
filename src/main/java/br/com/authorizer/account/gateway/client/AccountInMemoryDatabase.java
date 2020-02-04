@@ -12,6 +12,11 @@ public class AccountInMemoryDatabase {
         return Optional.ofNullable(account);
     }
 
+    public Account updateAccount(Account account) {
+        this.account = account;
+        return this.account;
+    }
+
     public Account createAccount(Account account) {
         this.account = account;
         return this.account;

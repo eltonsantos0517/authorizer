@@ -23,4 +23,9 @@ public class AccountRepository implements AccountGateway {
     public Account createAccount(CreateAccountRequest request) {
         return accountDatabase.createAccount(new Account(request.isActiveCard(), request.getAvailableLimit()));
     }
+
+    @Override
+    public Account updateAccount(Account account) {
+        return accountDatabase.updateAccount(account);
+    }
 }

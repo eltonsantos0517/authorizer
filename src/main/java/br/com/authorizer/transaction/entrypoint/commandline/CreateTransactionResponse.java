@@ -1,4 +1,4 @@
-package br.com.authorizer.account.entrypoint.commandline;
+package br.com.authorizer.transaction.entrypoint.commandline;
 
 import br.com.authorizer.Violation;
 import com.google.gson.annotations.SerializedName;
@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CreateAccountResponse {
+public class CreateTransactionResponse {
 
     private AccountResponse account;
     private List<String> violations;
 
-    public CreateAccountResponse(AccountResponse account, List<String> violations) {
+    public CreateTransactionResponse(AccountResponse account, List<String> violations) {
 
         this.account = account;
         this.violations = violations;
@@ -56,16 +56,16 @@ public class CreateAccountResponse {
             private Builder() {
             }
 
-            public static AccountResponse.Builder aResponse() {
-                return new AccountResponse.Builder();
+            public static Builder aResponse() {
+                return new Builder();
             }
 
-            public AccountResponse.Builder withActiveCard(boolean activeCard) {
+            public Builder withActiveCard(boolean activeCard) {
                 this.activeCard = activeCard;
                 return this;
             }
 
-            public AccountResponse.Builder withAvailableLimit(BigDecimal availableLimit) {
+            public Builder withAvailableLimit(BigDecimal availableLimit) {
                 this.availableLimit = availableLimit;
                 return this;
             }
@@ -102,8 +102,8 @@ public class CreateAccountResponse {
             return this;
         }
 
-        public CreateAccountResponse build() {
-            return new CreateAccountResponse(this.account, this.violations);
+        public CreateTransactionResponse build() {
+            return new CreateTransactionResponse(this.account, this.violations);
         }
     }
 }

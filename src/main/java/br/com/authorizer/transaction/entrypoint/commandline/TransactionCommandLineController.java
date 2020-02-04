@@ -1,33 +1,34 @@
-package br.com.authorizer.account.entrypoint.commandline;
+package br.com.authorizer.transaction.entrypoint.commandline;
 
 import authorizer_java.App;
 import br.com.authorizer.Violation;
 import br.com.authorizer.ViolationException;
 import br.com.authorizer.account.usecase.Account;
-import br.com.authorizer.account.usecase.CreateAccountRequest;
-import br.com.authorizer.account.usecase.CreateAccountUseCase;
+import br.com.authorizer.transaction.usecase.CreateTransactionRequest;
+import br.com.authorizer.transaction.usecase.CreateTransactionUseCase;
 
 import java.util.Collections;
 import java.util.List;
 
-public class AccountCommandLineController {
+public class TransactionCommandLineController {
 
-    private CreateAccountUseCase createAccount;
+    private CreateTransactionUseCase createTransaction;
 
-    public AccountCommandLineController(CreateAccountUseCase createAccount) {
-        this.createAccount = createAccount;
+    public TransactionCommandLineController(CreateTransactionUseCase createTransaction) {
+        this.createTransaction = createTransaction;
     }
 
-    public CreateAccountResponse createAccount(App.Account account) {
+    public CreateTransactionResponse createTransaction(App.Transaction transaction) {
 
         Account responseAccount;
         List<Violation> violations = Collections.emptyList();
 
         try {
-            responseAccount = createAccount.execute(CreateAccountRequest.Builder
+            responseAccount = createTransaction.execute(CreateTransactionRequest.Builder
                     .aRequest()
-                    .withActiveCard(account.activeCard)
-                    .withAvailableLimit(account.availableLimit)
+                    .withAmount(transaction.amount)
+                    .withMerchant(transaction.merchant)
+                    .withTime(transaction.time)
                     .build()
             );
         } catch (ViolationException violationException) {
@@ -39,11 +40,12 @@ public class AccountCommandLineController {
             throw e;
         }
 
-        return CreateAccountResponse.Builder
+
+        return CreateTransactionResponse.Builder
                 .aResponse()
                 .withAccountResponse(
                         responseAccount != null ?
-                                CreateAccountResponse.AccountResponse.Builder
+                                CreateTransactionResponse.AccountResponse.Builder
                                         .aResponse()
                                         .withActiveCard(responseAccount.isActiveCard())
                                         .withAvailableLimit(responseAccount.getAvailableLimit())

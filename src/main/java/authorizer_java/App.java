@@ -8,15 +8,19 @@ import br.com.authorizer.account.entrypoint.commandline.CreateAccountResponse;
 import br.com.authorizer.account.gateway.AccountRepository;
 import br.com.authorizer.account.gateway.client.AccountInMemoryDatabase;
 import br.com.authorizer.account.usecase.CreateAccountUseCase;
+import br.com.authorizer.account.usecase.validation.AccountValidationChain;
+import br.com.authorizer.transaction.entrypoint.commandline.CreateTransactionResponse;
+import br.com.authorizer.transaction.entrypoint.commandline.TransactionCommandLineController;
+import br.com.authorizer.transaction.gateway.TransactionRepository;
+import br.com.authorizer.transaction.gateway.client.TransactionInMemoryDatabase;
+import br.com.authorizer.transaction.usecase.CreateTransactionUseCase;
+import br.com.authorizer.transaction.usecase.validation.TransactionValidationChain;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class App {
@@ -52,11 +56,26 @@ public class App {
         ArrayList<Transaction> transactions = new ArrayList<>();
         String line;
 
+        AccountInMemoryDatabase accountInMemoryDatabase = new AccountInMemoryDatabase();
+
         AccountCommandLineController accountController = new AccountCommandLineController(
                 new CreateAccountUseCase(
                         new AccountRepository(
-                                new AccountInMemoryDatabase()
-                        )
+                                accountInMemoryDatabase
+                        ),
+                        new AccountValidationChain()
+                )
+        );
+
+        TransactionCommandLineController transactionController = new TransactionCommandLineController(
+                new CreateTransactionUseCase(
+                        new AccountRepository(
+                                accountInMemoryDatabase
+                        ),
+                        new TransactionRepository(
+                                new TransactionInMemoryDatabase()
+                        ),
+                        new TransactionValidationChain()
                 )
         );
 
@@ -80,73 +99,82 @@ public class App {
 //                }
 
                 CreateAccountResponse response = accountController.createAccount(request.account);
-                account = new Account();
-                account.activeCard = response.getAccount().isActiveCard();
-                account.availableLimit = response.getAccount().getAvailableLimit();
+//                account = new Account();
+//                account.activeCard = response.getAccount().isActiveCard();
+//                account.availableLimit = response.getAccount().getAvailableLimit();
 
                 w.println(g.toJson(response));
                 w.flush();
 
             } else if (request.transaction != null) {
-                if (account == null) {
-                    Result res = new Result();
-                    res.account = null;
-                    res.violations = new ArrayList<>();
-                    res.violations.add("account-not-initialized");
-                    w.println(g.toJson(res));
-                    w.flush();
-                } else {
-                    ArrayList<String> violations = new ArrayList<>();
-                    if (request.transaction.amount.compareTo(account.availableLimit) > 0) {
-                        violations.add("insufficient-limit");
-                    }
-                    if (account.activeCard != true) {
-                        violations.add("card-not-active");
-                    }
-                    {
-                        ZonedDateTime newTxTime = ZonedDateTime.parse(request.transaction.time, DateTimeFormatter.ISO_DATE_TIME).withZoneSameInstant(ZoneOffset.UTC);
-                        ZonedDateTime twoMinutesBefore = newTxTime.minusMinutes(2);
-                        ArrayList<Transaction> transactionsInLast2Mins = new ArrayList<>();
-                        for (Transaction tx : transactions) {
-                            if (ZonedDateTime.parse(tx.time, DateTimeFormatter.ISO_DATE_TIME).withZoneSameInstant(ZoneOffset.UTC).isAfter(twoMinutesBefore)) {
-                                transactionsInLast2Mins.add(tx);
-                            }
-                        }
-                        if (transactionsInLast2Mins.size() >= 3) {
-                            violations.add("high-frequency-small-interval");
-                        }
-                    }
-                    {
-                        ZonedDateTime newTxTime = ZonedDateTime.parse(request.transaction.time, DateTimeFormatter.ISO_DATE_TIME).withZoneSameInstant(ZoneOffset.UTC);
-                        ZonedDateTime twoMinutesBefore = newTxTime.minusMinutes(2);
-                        ArrayList<Transaction> similarTransactionsInLast2Mins = new ArrayList<>();
-                        for (Transaction tx : transactions) {
-                            if (ZonedDateTime.parse(tx.time, DateTimeFormatter.ISO_DATE_TIME).withZoneSameInstant(ZoneOffset.UTC).isAfter(twoMinutesBefore)
-                                    && tx.amount.equals(request.transaction.amount)
-                                    && tx.merchant.equals(request.transaction.merchant)) {
-                                similarTransactionsInLast2Mins.add(tx);
-                            }
-                        }
-                        if (!similarTransactionsInLast2Mins.isEmpty()) {
-                            violations.add("doubled-transaction");
-                        }
-                    }
-                    if (violations.isEmpty()) {
-                        transactions.add(request.transaction);
-                        account.availableLimit = account.availableLimit.subtract(request.transaction.amount);
-                        Result res = new Result();
-                        res.account = account;
-                        res.violations = violations;
-                        w.println(g.toJson(res));
-                        w.flush();
-                    } else {
-                        Result res = new Result();
-                        res.account = account;
-                        res.violations = violations;
-                        w.println(g.toJson(res));
-                        w.flush();
-                    }
-                }
+//                if (account == null) {
+//                    Result res = new Result();
+//                    res.account = null;
+//                    res.violations = new ArrayList<>();
+//                    res.violations.add("account-not-initialized");
+//                    w.println(g.toJson(res));
+//                    w.flush();
+//                } else {
+//                    ArrayList<String> violations = new ArrayList<>();
+//                    if (request.transaction.amount.compareTo(account.availableLimit) > 0) {
+//                        violations.add("insufficient-limit");
+//                    }
+//                    if (account.activeCard != true) {
+//                        violations.add("card-not-active");
+//                    }
+//                    {
+//                        ZonedDateTime newTxTime = ZonedDateTime.parse(request.transaction.time, DateTimeFormatter.ISO_DATE_TIME).withZoneSameInstant(ZoneOffset.UTC);
+//                        ZonedDateTime twoMinutesBefore = newTxTime.minusMinutes(2);
+//                        ArrayList<Transaction> transactionsInLast2Mins = new ArrayList<>();
+//                        for (Transaction tx : transactions) {
+//                            if (ZonedDateTime.parse(tx.time, DateTimeFormatter.ISO_DATE_TIME).withZoneSameInstant(ZoneOffset.UTC).isAfter(twoMinutesBefore)) {
+//                                transactionsInLast2Mins.add(tx);
+//                            }
+//                        }
+//                        if (transactionsInLast2Mins.size() >= 3) {
+//                            violations.add("high-frequency-small-interval");
+//                        }
+//                    }
+//                    {
+//                        ZonedDateTime newTxTime = ZonedDateTime.parse(request.transaction.time, DateTimeFormatter.ISO_DATE_TIME).withZoneSameInstant(ZoneOffset.UTC);
+//                        ZonedDateTime twoMinutesBefore = newTxTime.minusMinutes(2);
+//                        ArrayList<Transaction> similarTransactionsInLast2Mins = new ArrayList<>();
+//                        for (Transaction tx : transactions) {
+//                            if (ZonedDateTime.parse(tx.time, DateTimeFormatter.ISO_DATE_TIME).withZoneSameInstant(ZoneOffset.UTC).isAfter(twoMinutesBefore)
+//                                    && tx.amount.equals(request.transaction.amount)
+//                                    && tx.merchant.equals(request.transaction.merchant)) {
+//                                similarTransactionsInLast2Mins.add(tx);
+//                            }
+//                        }
+//                        if (!similarTransactionsInLast2Mins.isEmpty()) {
+//                            violations.add("doubled-transaction");
+//                        }
+//                    }
+//
+//                    if (violations.isEmpty()) {
+//                        transactions.add(request.transaction);
+//                        account.availableLimit = account.availableLimit.subtract(request.transaction.amount);
+//                        Result res = new Result();
+//                        res.account = account;
+//                        res.violations = violations;
+//                        w.println(g.toJson(res));
+//                        w.flush();
+//                    } else {
+//                        Result res = new Result();
+//                        res.account = account;
+//                        res.violations = violations;
+//                        w.println(g.toJson(res));
+//                        w.flush();
+//                    }
+//                }
+                CreateTransactionResponse response = transactionController.createTransaction(request.transaction);
+//                account = new Account();
+//                account.activeCard = response.getAccount().isActiveCard();
+//                account.availableLimit = response.getAccount().getAvailableLimit();
+
+                w.println(g.toJson(response));
+                w.flush();
+
             }
         }
     }
