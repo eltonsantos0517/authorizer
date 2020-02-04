@@ -32,7 +32,7 @@ public class AccountConverter {
                 .withAvailableLimit(account.getAvailableLimit())
                 .build();
     }
-    
+
     private AccountConverter() {
     }
 }

@@ -5,6 +5,7 @@ import br.com.authorizer.account.usecase.Account;
 import br.com.authorizer.transaction.usecase.CreateTransactionRequest;
 import br.com.authorizer.transaction.usecase.Transaction;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,8 @@ class CardNotActiveTransactionValidation implements TransactionValidation {
     public void validate(CreateTransactionRequest request, Optional<Account> opAccount, List<Transaction> persistedTransactions, List<Violation> violations) {
 
 
-        if (!opAccount.get().isActiveCard()) {
+        if (!opAccount.orElseGet(() -> new Account(false, BigDecimal.ZERO))
+                .isActiveCard()) {
             violations.add(Violation.CARD_NOT_ACTIVE);
         }
 

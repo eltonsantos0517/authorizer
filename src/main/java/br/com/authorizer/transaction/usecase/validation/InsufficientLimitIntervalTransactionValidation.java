@@ -5,6 +5,7 @@ import br.com.authorizer.account.usecase.Account;
 import br.com.authorizer.transaction.usecase.CreateTransactionRequest;
 import br.com.authorizer.transaction.usecase.Transaction;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +20,8 @@ class InsufficientLimitIntervalTransactionValidation implements TransactionValid
     @Override
     public void validate(CreateTransactionRequest request, Optional<Account> opAccount, List<Transaction> persistedTransactions, List<Violation> violations) {
 
-        if (request.getAmount().compareTo(opAccount.get().getAvailableLimit()) > 0) {
+        if (request.getAmount()
+                .compareTo(opAccount.orElseGet(() -> new Account(false, BigDecimal.ZERO)).getAvailableLimit()) > 0) {
             violations.add(Violation.INSUFFICIENT_LIMIT);
         }
 

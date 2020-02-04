@@ -7,6 +7,7 @@ import br.com.authorizer.account.usecase.Account;
 import br.com.authorizer.transaction.gateway.TransactionGateway;
 import br.com.authorizer.transaction.usecase.validation.TransactionValidationChain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,11 +39,15 @@ public class CreateTransactionUseCase {
 
         transactionGateway.createTransaction(request);
 
-        return accountGateway.updateAccount(
-                new Account(
-                        opAccount.get().isActiveCard(),
-                        opAccount.get().getAvailableLimit().subtract(request.getAmount())
-                )
-        );
+        if (opAccount.isPresent()) {
+            return accountGateway.updateAccount(
+                    new Account(
+                            opAccount.get().isActiveCard(),
+                            opAccount.get().getAvailableLimit().subtract(request.getAmount())
+                    )
+            );
+        } else {
+            return new Account(false, BigDecimal.ZERO);
+        }
     }
 }

@@ -10,5 +10,6 @@ public interface AccountGateway {
     Optional<Account> getAccount();
 
     Account createAccount(CreateAccountRequest request);
+
     Account updateAccount(Account account);
 }

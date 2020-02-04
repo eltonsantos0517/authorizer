@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 public class CreateTransactionRequest {
 
-    public BigDecimal amount;
-    public String merchant;
-    public String time;
+    private BigDecimal amount;
+    private String merchant;
+    private String time;
 
     public CreateTransactionRequest(BigDecimal amount, String merchant, String time) {
         this.amount = amount;
@@ -28,9 +28,9 @@ public class CreateTransactionRequest {
 
 
     public static final class Builder {
-        public BigDecimal amount;
-        public String merchant;
-        public String time;
+        private BigDecimal amount;
+        private String merchant;
+        private String time;
 
         private Builder() {
         }
