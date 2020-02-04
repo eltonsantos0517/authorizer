@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CreateTransactionUseCase {
+public class CreateTransactionUseCase implements CreateTransaction {
 
     private AccountGateway accountGateway;
     private TransactionGateway transactionGateway;

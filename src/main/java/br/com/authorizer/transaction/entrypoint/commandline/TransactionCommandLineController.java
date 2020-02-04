@@ -4,16 +4,16 @@ import br.com.authorizer.App;
 import br.com.authorizer.Violation;
 import br.com.authorizer.ViolationException;
 import br.com.authorizer.account.usecase.Account;
-import br.com.authorizer.transaction.usecase.CreateTransactionUseCase;
+import br.com.authorizer.transaction.usecase.CreateTransaction;
 
 import java.util.Collections;
 import java.util.List;
 
 public class TransactionCommandLineController {
 
-    private CreateTransactionUseCase createTransaction;
+    private CreateTransaction createTransaction;
 
-    public TransactionCommandLineController(CreateTransactionUseCase createTransaction) {
+    public TransactionCommandLineController(CreateTransaction createTransaction) {
         this.createTransaction = createTransaction;
     }
 

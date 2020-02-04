@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CreateAccountUseCase {
+public class CreateAccountUseCase implements CreateAccount {
 
     private AccountGateway accountGateway;
     private AccountValidationChain accountValidationChain;

@@ -4,16 +4,16 @@ import br.com.authorizer.App;
 import br.com.authorizer.Violation;
 import br.com.authorizer.ViolationException;
 import br.com.authorizer.account.usecase.Account;
-import br.com.authorizer.account.usecase.CreateAccountUseCase;
+import br.com.authorizer.account.usecase.CreateAccount;
 
 import java.util.Collections;
 import java.util.List;
 
 public class AccountCommandLineController {
 
-    private CreateAccountUseCase createAccount;
+    private CreateAccount createAccount;
 
-    public AccountCommandLineController(CreateAccountUseCase createAccount) {
+    public AccountCommandLineController(CreateAccount createAccount) {
         this.createAccount = createAccount;
     }
 
