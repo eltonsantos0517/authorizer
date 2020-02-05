@@ -5,7 +5,6 @@ import br.com.authorizer.ViolationException;
 import br.com.authorizer.account.gateway.AccountGateway;
 import br.com.authorizer.account.usecase.Account;
 import br.com.authorizer.account.usecase.CreateAccountRequest;
-import br.com.authorizer.account.usecase.CreateAccountUseCase;
 import br.com.authorizer.transaction.gateway.TransactionGateway;
 import br.com.authorizer.transaction.usecase.validation.ValidationChain;
 import org.junit.Assert;

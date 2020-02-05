@@ -1,5 +1,17 @@
 # authorizer-java
 
+# About Project
+## Architecture
+Choose Clean architecture pattern because it provides easy maintainability and minor change impact risk
+
+## Chains of Responsibility
+Choose this pattern in business rule validation because is very easy to apply new rules and change their order in the chain
+
+## Strategy of refactoring
+How integration tests had already been implemented i choose to refactoring by parts, 
+i started with account flow refactoring, after the end, run the integration tests and they passed with success. 
+Right after it's time to refactor transaction flow, after ending run the integration tests and they passed with success.
+
 ## Running
 You can run and test everything with the gradlew script:
 
@@ -29,3 +41,4 @@ $ ./gradlew --console plain --quiet run < resources/example.txt
 Dependencies available on this project are:
 - `com.google.code.gson:gson:2.8.6`, used for parsing JSON
 - `junit:junit:4.12`, for testing
+
