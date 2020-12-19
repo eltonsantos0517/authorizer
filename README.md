@@ -1,6 +1,10 @@
 # authorizer-java
 
 # About Project
+
+## Goal
+Project needed for an interview in a big fintech
+
 ## Architecture
 Choose Clean architecture pattern because it provides easy maintainability and minor change impact risk
 
